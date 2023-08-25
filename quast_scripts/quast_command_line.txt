@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+#Date: 25.08.2023
+#Version 1
+
+#This code was not saved as a file, but rather ran on the command line to generate all the QUAST analysis of all of the samples.
+
+for i in '${/usr/hpc_projects/rvpbru/serotype_3_clades/assemblies}'; do qsub /home/vuyelwa.nkomo/.conda/envs/quast/bin/quast -o /usr/hpc_storage/home/vuyelwa.nkomo/project_results/quast_results/ /usr/hpc_projects/department/serotype_3_clades/assemblies/*_contigs.fasta ;done
+
+#user profiles have been removed to generic names for confidentiality reasons.

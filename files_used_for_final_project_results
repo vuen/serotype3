@@ -1,0 +1,101 @@
+Working environments:
+
+PopPUNK:
+pp_env
+
+
+
+
+Files that have worked and their output files:
+
+
+***creating two column reference list of all samples***
+
+1. Name            : two_column_list.py
+   What does it do?: Creates a two column lost of file names within a assemblies directory along with their file paths 
+   Argument files  : Directory path ~/serotype3_sequences/serotype_3_clades/assemblies
+   Output file     : file_list.txt
+
+***Quast Analysis of all samples***
+
+1. Name            : quast_command_line.txt
+   What does it do?: Command line script for running QUAST analysis
+   argument files  : all the files in the assemblies folder
+   Output file     : output results placed in a quast folder that will be used later on
+
+2. Name            : quast_histogram.py
+   What does it do?: Creates an N50 histogram with the cut off
+   argument files  : 
+   Output file     : histogram diagram
+
+***Stage one filtering of qc data***
+
+1. Name            : qc_test_v4.py
+   What does it do?: This QC test removes any samples that have more than one species in them and have a 'post_yield_trim' that is less than 70. This gives us the final number of samples we should be using for the quast analysis.
+   argument files  : df = pd.read_csv('~/serotype3_sequences/serotype_3_clades/serotype3_metadata/serotype3_readqc_data_2396.csv')
+   Output file     : filtered_qc_data.csv
+
+2. Name            : removed_qc_test.py
+   What does it do?: This produces the samples that have been filtered out by the qc_test_v4.py
+   Argument files  : df = pd.read_csv('~/serotype3_sequences/serotype_3_clades/serotype3_metadata/serotype3_readqc_data_2396.csv')
+   Output file     : removed_qc_data.csv
+
+3. Name            : test2.py
+   What does it do?: This produces the samples that have been filtered out by the qc_test_v4.py
+   Argument files  : df = pd.read_csv('~/serotype3_sequences/serotype_3_clades/serotype3_metadata/serotype3_readqc_data_2396.csv')
+   Output file     : removed_qc_data2.csv
+
+4. Name            : total_removed_qc_test.py
+   What does it do?: Concantenates the two tables that have sequences that have been filtered out by qc_test_v4.py
+   Argument files  : table1 = pd.read_csv("removed_qc_data.csv")
+	 	     table2 = pd.read_csv("removed_qc_data2.csv")
+   Output file     : total_removed_qc.csv
+
+
+***Stage two quast qc -- of filtering data***
+
+1. Name            : test3.py
+   What does it do?: This removes the samples that were filtered out by qc_test_v4.py to create a new file of the remaining samples' quast results
+   Argument files  : table1 = pd.read_csv("total_removed_qc.csv")
+		     table2 = pd.read_csv("~/vuyelwa.nkomo/project_results/quast_results/transposed_report.tsv",sep="\t")
+   Output file     : filtered_transposed_report2.csv
+
+2. Name            : quast_qc_filter.py
+   What does it do?: This tests and filters out any samples with an N50 value <5000
+   Argument files  : filtered_transposed_report2.csv
+   Output file     : filtered_quast_qc_data.csv
+
+***Stage 3 poppunk analysis***
+
+1. Name            : test4.py
+   What does it do?: No samples were removed from quast_qc_filter.py results, this code removes the 10 samples in total_removed_qc.csv from the reference_list.txt to create a csv txt file that has three columns.
+   Argument files  : table1 = pd.read_csv("total_removed_qc.csv")
+		     table2 = pd.read_csv("~/vuyelwa.nkomo/path_to_scripts/reference_list.txt", sep='\t', header=None, names=['Assembly', 'File_Path'])
+   Output file     : new_reference_list.txt
+
+2. Name            : refine_new_reference_list.py
+   What does it do?: creates a two column txt file from new_reference_list.txt
+   Argument files  : input_file_path = 'new_reference_list.txt'
+   Output file     : refine_new_reference_list.txt
+
+3. Name            : metadata_refine2.py -- check metada_refine.py as well
+   What does it do?: changes date and creates three new columns as well as changing the origan 'ngsid' column to 'old_ngsid'
+   Argument files  : ~/vuyelwa.nkomo/path_to_scripts/metadata_serotype3.csv
+   Output file     : metadata_refine2.csv
+
+4. Name            : metadata_gpsc.py
+   What does it do?: adding gpsc data from gpsc microreact file to metadata
+   Argument files  : table1 = pd.read_csv('~/vuyelwa.nkomo/path_to_scripts/metadata_refine2.csv')
+ 		     table2 = pd.read_csv('~/vuyelwa.nkomo/project_results/gpsc_assignment/gpsc_assignment_external_clusters.csv')
+   Output file     : metadata_gpsc.csv
+
+5. Name            : metadata_lineage.py
+   What does it do?: adding lineage output into metadata
+   Argument files  : table1 = pd.read_csv('~/vuyelwa.nkomo/path_to_scripts/metadata_gpsc.csv')
+		     table2 = pd.read_csv('~/vuyelwa.nkomo/project_results/poppunk_results_gps_2/poppunk_results_gps_2_microreact_clusters.csv')
+   Output file     : 
+
+6. Name            : poppunk_visualise
+   What does it do?: Visualisation for microreact, phandango and cytoscape
+   Argument files  : poppunk result files
+   Output file     : visualisation files
